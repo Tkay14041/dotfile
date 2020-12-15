@@ -45,6 +45,12 @@ set showtabline=2
 " ステータスバー表示
 set laststatus=2
 
+" コントロール+e でツリー表示
+nnoremap <silent><C-e> :NERDTreeToggle<CR>
+
+" デフォルトで隠しファイルを表示
+let NERDTreeShowHidden = 1
+
 "------------
 " search
 "------------
@@ -101,13 +107,13 @@ nnoremap \ :%s/old/new/g<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 nnoremap bd :bd<CR>
 
 " 括弧の補完
-inoremap {<Enter> {}<Left><CR><ESC><S-o>
-inoremap [<Enter> []<Left><CR><ESC><S-o>
-inoremap (<Enter> ()<Left><CR><ESC><S-o>
+" inoremap {<Enter> {}<Left><CR><ESC><S-o>
+" inoremap [<Enter> []<Left><CR><ESC><S-o>
+" inoremap (<Enter> ()<Left><CR><ESC><S-o>
 
 " クオーテーションの補完
-inoremap ' ''<LEFT>
-inoremap " ""<LEFT>
+" inoremap ' ''<LEFT>
+" inoremap " ""<LEFT>
 
 " insertモードでemacsのキーバインドを使えるようにする
 imap <C-p> <Up>

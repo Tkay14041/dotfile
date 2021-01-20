@@ -149,17 +149,17 @@ endif
 
 " プラグインがインストールされるディレクトリ
 let s:dein_dir = expand('~/.vim/bundles')
-
+"
 " dein.vim本体
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-
-if &runtimepath !~# '/dein.vim'
-  if !isdirectory(s:dein_repo_dir)
-    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
-  endif
-  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
-endif
-
+"
+"if &runtimepath !~# '/dein.vim'
+"  if !isdirectory(s:dein_repo_dir)
+"    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+"  endif
+"  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+"endif
+set runtimepath+=/Users/takuya.uchida/.cache/dein/repos/github.com/Shougo/dein.vim
 " tomlセット
 let s:toml_dir=expand('~/.dein/')
 let s:toml=s:toml_dir . 'dein.toml'

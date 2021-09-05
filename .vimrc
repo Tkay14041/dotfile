@@ -1,10 +1,10 @@
 set shell=/bin/zsh
 
-"------------
-" encoding 
-"------------
-set encoding=utf8
-scriptencoding utf8
+"-----------
+" encoding
+"-----------
+set encoding=utf-8
+scriptencoding utf-8
 set fileencoding=utf-8
 set termencoding=utf8
 set fileencodings=utf-8,ucs-boms,euc-jp,ep932
@@ -45,12 +45,6 @@ set showtabline=2
 " ステータスバー表示
 set laststatus=2
 
-" コントロール+e でツリー表示
-nnoremap <silent><C-e> :NERDTreeToggle<CR>
-
-" デフォルトで隠しファイルを表示
-let NERDTreeShowHidden = 1
-
 "------------
 " search
 "------------
@@ -68,6 +62,9 @@ set incsearch
 
 " ESC２回でハイライト解除
 nnoremap <ESC><ESC> :noh<CR>
+
+" vimgrep, grep, Ggrepなどで自動的にquickfix-windowを開く
+autocmd QuickFixCmdPost *grep* cwindow
 
 "------------
 " indent
@@ -87,6 +84,10 @@ au FileType go setlocal sw=4 ts=4 sts=4 noet
 " xで削除した時はヤンクしない
 vnoremap x "_x
 nnoremap x "_x
+
+" dで削除した時はヤンクしない
+vnoremap d "_d
+nnoremap d "_d
 
 " 1 で行頭に移動
 nnoremap 1 ^
@@ -110,21 +111,14 @@ nnoremap bd :bd<CR>
 " inoremap {<Enter> {}<Left><CR><ESC><S-o>
 " inoremap [<Enter> []<Left><CR><ESC><S-o>
 " inoremap (<Enter> ()<Left><CR><ESC><S-o>
+inoremap { {}<Left>
+inoremap {<Enter> {}<Left><CR><ESC><S-o>
+inoremap ( ()<ESC>i
+inoremap (<Enter> ()<Left><CR><ESC><S-o>
 
 " クオーテーションの補完
-" inoremap ' ''<LEFT>
-" inoremap " ""<LEFT>
-
-" insertモードでemacsのキーバインドを使えるようにする
-imap <C-p> <Up>
-imap <C-n> <Down>
-imap <C-b> <Left>
-imap <C-f> <Right>
-imap <C-a> <C-o>:call <SID>home()<CR>
-imap <C-e> <End>
-imap <C-d> <Del>
-imap <C-h> <BS>
-imap <C-k> <C-r>=<SID>kill()<CR>
+inoremap ' ''<LEFT>
+inoremap " ""<LEFT>
 
 " visulaモードでインデント調整後に選択範囲を開放しない
 vnoremap > >gv
@@ -143,47 +137,136 @@ nnoremap sv :<C-u>vs<CR><C-w>l
 "------------
 " plugins
 "------------
-if &compatible
-  set nocompatible
+
+" vim-plug setup
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" プラグインがインストールされるディレクトリ
-let s:dein_dir = expand('~/.vim/bundles')
-"
-" dein.vim本体
-let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-"
-"if &runtimepath !~# '/dein.vim'
-"  if !isdirectory(s:dein_repo_dir)
-"    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
-"  endif
-"  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
-"endif
-set runtimepath+=/Users/takuya.uchida/.cache/dein/repos/github.com/Shougo/dein.vim
-" tomlセット
-let s:toml_dir=expand('~/.dein/')
-let s:toml=s:toml_dir . 'dein.toml'
-let s:toml_lazy=s:toml_dir . 'dein-lazy.toml'
+call plug#begin('~/.vim/plugged')
 
-" プラグインのロード
-if dein#load_state(s:dein_dir)
-  call dein#begin(s:dein_dir)
+" Make sure you use single quotes
 
-  call dein#load_toml(s:toml)
-  call dein#load_toml(s:toml_lazy, {'lazy': 1})
+" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+Plug 'junegunn/vim-easy-align'
 
-  call dein#end()
-  call dein#save_state()
-endif
+Plug 'itchyny/lightline.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
-" インストールしていないプラグインがあればインストールを実行
-if dein#check_install()
-  call dein#install()
-endif
+Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/fern-git-status.vim'
+Plug 'lambdalisue/nerdfont.vim'
+Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+Plug 'lambdalisue/glyph-palette.vim'
+Plug 'yuki-yano/fern-preview.vim'
+
+" lsp
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'mattn/vim-lsp-icons'
+Plug 'mattn/vim-goimports'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+Plug 'mhinz/vim-startify'
+
+Plug 'alvan/vim-closetag'
+
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+" Initialize plugin system
+call plug#end()
+
+"--------------
+" Plugin config
+" -------------
+" fern design
+let g:fern#renderer = 'nerdfont'
+augroup my-glyph-palette
+  autocmd! *
+  autocmd FileType fern call glyph_palette#apply()
+  autocmd FileType nerdtree,startify call glyph_palette#apply()
+augroup END
+
+nnoremap <silent><C-e> :Fern . -reveal=%<CR>
+function! s:fern_settings() abort
+  nmap <silent> <buffer> p     <Plug>(fern-action-preview:toggle)
+  nmap <silent> <buffer> <C-p> <Plug>(fern-action-preview:auto:toggle)
+  nmap <silent> <buffer> <C-d> <Plug>(fern-action-preview:scroll:down:half)
+  nmap <silent> <buffer> <C-u> <Plug>(fern-action-preview:scroll:up:half)
+endfunction
+
+augroup fern-settings
+  autocmd!
+  autocmd FileType fern call s:fern_settings()
+augroup END
+"------------
+" lsp setting
+"------------
+let g:goimports_simplify = 1  " 保存時に`gofmt -s`を実行する
+
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+endfunction
+
+augroup lsp_install
+    au!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
 
 "------------
 " color scheme
 "------------
-syntax enable
-colorscheme darcula
+autocmd ColorScheme * highlight Normal ctermfg=250 ctermbg=236
+autocmd ColorScheme * highlight LineNr ctermbg=236
+autocmd ColorScheme * highlight SignColumn ctermbg=236
+autocmd ColorScheme * highlight GitGutterAdd ctermbg=236
+autocmd ColorScheme * highlight CursorColumn ctermbg=237
+autocmd ColorScheme * highlight CursorLine ctermbg=237
+autocmd ColorScheme * highlight Special ctermfg=202
 
+syntax enable
+" solarized options 
+set background=dark
+let g:solarized_visibility="high"
+let g:solarized_contrast="high"
+let g:solarized_termcolors=256
+colorscheme solarized
+
+"------------
+" Design
+"------------
+
+" status line
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead'
+      \ },
+      \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
+      \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
+      \ }
+
+" auto complete
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"

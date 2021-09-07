@@ -9,7 +9,6 @@ set fileencoding=utf-8
 set termencoding=utf8
 set fileencodings=utf-8,ucs-boms,euc-jp,ep932
 set fileformats=unix,dos,mac
-set ambiwidth=double
 set nobomb
 set t_Co=256
 
@@ -176,8 +175,16 @@ Plug 'mhinz/vim-startify'
 
 Plug 'alvan/vim-closetag'
 
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+Plug 'kyazdani42/nvim-web-devicons'
+
+Plug 'embark-theme/vim', { 'as': 'embark' }
 
 " Initialize plugin system
 call plug#end()
@@ -193,7 +200,7 @@ augroup my-glyph-palette
   autocmd FileType nerdtree,startify call glyph_palette#apply()
 augroup END
 
-nnoremap <silent><C-e> :Fern . -reveal=%<CR>
+nnoremap <silent><C-e> :Fern . -reveal=% -drawer -toggle -width=40<CR>
 function! s:fern_settings() abort
   nmap <silent> <buffer> p     <Plug>(fern-action-preview:toggle)
   nmap <silent> <buffer> <C-p> <Plug>(fern-action-preview:auto:toggle)
@@ -205,6 +212,18 @@ augroup fern-settings
   autocmd!
   autocmd FileType fern call s:fern_settings()
 augroup END
+
+" ----------------
+" Telescope config
+" ----------------
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope command_history<cr>
+nnoremap <leader>fo <cmd>Telescope oldfiles<cr>
+
+
 "------------
 " lsp setting
 "------------
@@ -233,20 +252,22 @@ augroup END
 " color scheme
 "------------
 autocmd ColorScheme * highlight Normal ctermfg=250 ctermbg=236
-autocmd ColorScheme * highlight LineNr ctermbg=236
+autocmd ColorScheme * highlight LineNr ctermfg=243 ctermbg=236
 autocmd ColorScheme * highlight SignColumn ctermbg=236
 autocmd ColorScheme * highlight GitGutterAdd ctermbg=236
 autocmd ColorScheme * highlight CursorColumn ctermbg=237
 autocmd ColorScheme * highlight CursorLine ctermbg=237
-autocmd ColorScheme * highlight Special ctermfg=202
+autocmd ColorScheme * highlight Comment ctermfg=247
+autocmd ColorScheme * highlight Visual ctermfg=159 ctermbg=240
 
 syntax enable
 " solarized options 
-set background=dark
-let g:solarized_visibility="high"
-let g:solarized_contrast="high"
-let g:solarized_termcolors=256
-colorscheme solarized
+"set background=dark
+"let g:solarized_visibility="high"
+"let g:solarized_contrast="high"
+"let g:solarized_termcolors=256
+"colorscheme solarized
+colorscheme embark
 
 "------------
 " Design

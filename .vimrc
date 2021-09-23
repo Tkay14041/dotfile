@@ -101,7 +101,7 @@ nnoremap <silent> 9 :bprev<CR>
 nnoremap <silent> 0 :bnext<CR>
 
 " Option + | でファイル内の文字置換
-nnoremap \ :%s/old/new/g<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
+"nnoremap \ :%s/old/new/g<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 
 " 現在のバッファ削除
 nnoremap bd :bd<CR>
@@ -184,7 +184,9 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 Plug 'kyazdani42/nvim-web-devicons'
 
-Plug 'embark-theme/vim', { 'as': 'embark' }
+"Plug 'embark-theme/vim', { 'as': 'embark' }
+
+Plug 'arcticicestudio/nord-vim'
 
 " Initialize plugin system
 call plug#end()
@@ -251,14 +253,14 @@ augroup END
 "------------
 " color scheme
 "------------
-autocmd ColorScheme * highlight Normal ctermfg=250 ctermbg=236
-autocmd ColorScheme * highlight LineNr ctermfg=243 ctermbg=236
-autocmd ColorScheme * highlight SignColumn ctermbg=236
-autocmd ColorScheme * highlight GitGutterAdd ctermbg=236
-autocmd ColorScheme * highlight CursorColumn ctermbg=237
-autocmd ColorScheme * highlight CursorLine ctermbg=237
-autocmd ColorScheme * highlight Comment ctermfg=247
-autocmd ColorScheme * highlight Visual ctermfg=159 ctermbg=240
+"autocmd ColorScheme * highlight Normal ctermfg=250 ctermbg=236
+"autocmd ColorScheme * highlight LineNr ctermfg=243 ctermbg=236
+"autocmd ColorScheme * highlight SignColumn ctermbg=236
+"autocmd ColorScheme * highlight GitGutterAdd ctermbg=236
+"autocmd ColorScheme * highlight CursorColumn ctermbg=237
+"autocmd ColorScheme * highlight CursorLine ctermbg=237
+"autocmd ColorScheme * highlight Comment ctermfg=247
+"autocmd ColorScheme * highlight Visual ctermfg=159 ctermbg=240
 
 syntax enable
 " solarized options 
@@ -267,7 +269,8 @@ syntax enable
 "let g:solarized_contrast="high"
 "let g:solarized_termcolors=256
 "colorscheme solarized
-colorscheme embark
+"colorscheme embark
+colorscheme nord
 
 "------------
 " Design

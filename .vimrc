@@ -43,6 +43,9 @@ set showtabline=2
 
 " ステータスバー表示
 set laststatus=2
+" preserve buffer
+autocmd BufWritePost * mkview
+autocmd BufReadPost * silent! loadview
 
 "------------
 " search
@@ -54,7 +57,7 @@ set ignorecase
 set smartcase
 
 " 検索した時にハイライト
-set hlsearch
+set nohlsearch
 
 " インクリメンタルサーチ
 set incsearch
@@ -179,14 +182,18 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'sindrets/diffview.nvim'
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 Plug 'kyazdani42/nvim-web-devicons'
 
-"Plug 'embark-theme/vim', { 'as': 'embark' }
+Plug 'tpope/vim-surround'
 
 Plug 'arcticicestudio/nord-vim'
+
+" tmux
+Plug 'edkolev/tmuxline.vim'
 
 " Initialize plugin system
 call plug#end()
@@ -253,23 +260,7 @@ augroup END
 "------------
 " color scheme
 "------------
-"autocmd ColorScheme * highlight Normal ctermfg=250 ctermbg=236
-"autocmd ColorScheme * highlight LineNr ctermfg=243 ctermbg=236
-"autocmd ColorScheme * highlight SignColumn ctermbg=236
-"autocmd ColorScheme * highlight GitGutterAdd ctermbg=236
-"autocmd ColorScheme * highlight CursorColumn ctermbg=237
-"autocmd ColorScheme * highlight CursorLine ctermbg=237
-"autocmd ColorScheme * highlight Comment ctermfg=247
-"autocmd ColorScheme * highlight Visual ctermfg=159 ctermbg=240
-
 syntax enable
-" solarized options 
-"set background=dark
-"let g:solarized_visibility="high"
-"let g:solarized_contrast="high"
-"let g:solarized_termcolors=256
-"colorscheme solarized
-"colorscheme embark
 colorscheme nord
 
 "------------
@@ -278,7 +269,7 @@ colorscheme nord
 
 " status line
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'seoul256',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -294,3 +285,15 @@ let g:lightline = {
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
+" status line for tmux
+let g:tmuxline_preset = {
+      \'a'    : '#S',
+      \'c'    : ['#(whoami)'],
+      \'win'  : ['#I', '#W'],
+      \'cwin' : ['#I', '#W'],
+      \'x'    : ['#{battery_percentage} #{battery_icon}', '#{cpu_percentage} #{cpu_icon}'],
+      \'y'    : ['%a', '%R', '#(ansiweather -l tokyo -w false -h false -p false -a false | cut -d " " -f5,6)'],
+      \'z'    : '#H',
+      \'options' : {'status-justify':'left'}}
+let g:tmuxline_theme = 'zenburn'

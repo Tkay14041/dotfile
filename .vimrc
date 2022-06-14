@@ -24,9 +24,6 @@ set clipboard+=unnamed
 " ビープ音を消す
 set belloff=all
 
-" 行番号系
-set number
-
 " タイトル系
 set title
 
@@ -39,10 +36,10 @@ set cursorcolumn
 set ruler
 
 " タブ表示
-set showtabline=2
+"set showtabline=2
 
 " ステータスバー表示
-set laststatus=2
+"set laststatus=2
 " preserve buffer
 autocmd BufWritePost * mkview
 autocmd BufReadPost * silent! loadview

@@ -1,0 +1,4 @@
+.vim/tmp
+.vim/bundles
+.vim/plugged
+.config/nvim/plugged

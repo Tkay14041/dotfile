@@ -1,4 +1,6 @@
 .vim/tmp
 .vim/bundles
 .vim/plugged
+.vim/view
+.vim/.netrwhist
 .config/nvim/plugged

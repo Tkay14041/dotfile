@@ -1,6 +1,3 @@
-set runtimepath^=~/.vim runtimepath+=~/.vim/after
-let &packpath = &runtimepath
-
 "-----------
 " encoding
 "-----------
@@ -25,7 +22,7 @@ set clipboard+=unnamed
 set belloff=all
 
 " swap configuration
-set directory=~/.vim/tmp
+set directory=~/.local/share/nvim/tmp
 
 " 挿入モードでバックスペース削除を有効
 set backspace=indent,eol,start
@@ -119,7 +116,7 @@ nnoremap sv :<C-u>vs<CR><C-w>l
 "------------
 " plugins
 "------------
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
 
 " Make sure you use single quotes
 

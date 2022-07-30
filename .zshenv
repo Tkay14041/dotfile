@@ -8,3 +8,4 @@ alias shuf='gshuf'
 alias split='gsplit'
 alias vim='nvim'
 alias cat='bat'
+. "$HOME/.cargo/env"

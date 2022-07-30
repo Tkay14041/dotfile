@@ -73,9 +73,6 @@ setopt hist_ignore_dups
 setopt hist_verify
 setopt hist_expand
 
-# anyenv
-eval "$(anyenv init -)"
-
 # go
 export GOPATH=$HOME/go
 export GOROOT=$( go env GOROOT )

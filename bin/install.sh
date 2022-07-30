@@ -1,16 +1,13 @@
 #!/bin/bash
 
-ln -s ~/dotfiles/.zshrc ~/.zshrc
-ln -s ~/dotfiles/.vimrc ~/.vimrc
-ln -s ~/dotfiles/.vim ~/.vim
-ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
-ln -s ~/dotfiles/.config/nvim ~/.config/nvim
+# error handling of undefined variables
+set -u
 
-# tmux
-if [ ! /usr/local/Cellar/tmux ]; then
-  brew install tmux
-fi
-if [ ! ~/.tmux/plugin/tpm ]; then
-  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-fi
+echo "start setup..."
+for f in .??*; do
+  [ "$f" = ".git" ] && continue
+  [ "$f" = ".gitignore" ] && continue
+
+  ln -snfv ~/dotfiles/"$f" ~/
+done
 
